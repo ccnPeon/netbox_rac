@@ -1,0 +1,6 @@
+{% if bgp['peer_filters'] %}
+{% for peerfilter in bgp['peer_filters'] %}
+peer-filter {{ peerfilter }}
+    match as-range {{ group_vars['bgp']['peer_filters'][peerfilter]['as_range'] }} result accept
+{%  endfor %}
+{%  endif %}

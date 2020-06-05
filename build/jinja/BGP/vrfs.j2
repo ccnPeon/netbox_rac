@@ -1,0 +1,21 @@
+{% for vrf in vrf_list %}
+{# Configure Vlan Aware Bundle for MAC VRF #}
+{% if vrf in group_vars['bgp']['vlan-aware-bundles'] %}
+    vlan-aware-bundle {{ vrf }}
+        rd {{ interfaces['Loopback0']['ip'][:-3] }}:{{ group_vars['bgp']['vlan-aware-bundles'][vrf]['rd'] }}
+        route-target both 1:{{ group_vars['bgp']['vlan-aware-bundles'][vrf]['rd'] }}
+        redistribute learned
+        vlan {{ group_vars['bgp']['vlan-aware-bundles'][vrf]['vlan_list'] }}
+{% endif %}
+{# End Configure Vlan Aware Bundle for MAC VRF#}
+!
+{# Configure VRF for IP VRF #}
+{% if group_vars['vrf']['info'][vrf]['is_evpn'] == True %}
+    vrf {{ vrf }}
+        rd {{ interfaces['Loopback0']['ip'][:-3] }}:{{ group_vars['vrf']['info'][vrf]['vni'] }}
+        route-target import evpn 1:{{ group_vars['vrf']['info'][vrf]['vni'] }}
+        route-target export evpn 1:{{ group_vars['vrf']['info'][vrf]['vni'] }}
+        redistribute connected
+{% endif %}
+!
+{% endfor %}

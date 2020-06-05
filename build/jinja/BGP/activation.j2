@@ -1,0 +1,13 @@
+{% if bgp['peer_groups'] %}
+{% for group in bgp['peer_groups'] %}
+{% if group_vars['bgp']['peer_groups'][group]['is_evpn'] and group_vars['bgp']['peer_groups'][group]['is_evpn'] == True %}
+    address-family evpn
+        neighbor {{ group }} activate
+{% endif %}
+{% if group_vars['bgp']['peer_groups'][group]['is_underlay'] and group_vars['bgp']['peer_groups'][group]['is_underlay'] == True %}
+    address-family ipv4
+        neighbor {{ group }} activate
+{% endif %}
+!
+{% endfor %}
+{%  endif %}

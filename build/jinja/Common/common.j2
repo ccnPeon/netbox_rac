@@ -1,0 +1,23 @@
+enable
+configure session labBuilder
+rollback clean-config
+lldp management-address ma1
+hostname {{ hostname }}
+ip routing
+service routing protocols model multi-agent
+!
+vrf instance MGMT
+!
+interface Management1
+    vrf MGMT
+    ip address {{ management['ip'] }}/{{ management['mask'] }}
+    no shutdown
+!
+ip route vrf MGMT 0/0 {{ management['default_route'] }}
+!
+username cvpadmin secret 0 arista
+!
+management api http-commands
+    no shutdown
+    vrf MGMT
+    no shutdown

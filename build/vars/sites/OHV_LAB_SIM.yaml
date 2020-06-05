@@ -1,0 +1,211 @@
+OHV_LAB_SIM:
+    description: Ohio Valley Lab Environment
+    devices:
+        EOS1:
+            device_type: 7280SR
+            device_role: Spine
+            device_platform: EOS
+            manufacturer: Arista
+            fqdn: eos1.greer.net
+            mgmt_ip: 10.255.255.31/24
+            mgmt_vrf: MGMT
+            bgp:
+                as: 65100
+                neighbors:
+                    ipv4_unicast:
+                        10.102.201.102:
+                            remote_as: 65101
+                            description: EOS2
+                        10.103.201.103:
+                            remote_as: 65102
+                            description: EOS
+                        10.104.201.104:
+                            remote_as: 65102
+                            description: EOS4
+                    evpn:
+                        1.1.1.102:
+                            remote_as: 65101
+                        1.1.1.103:
+                            remote_as: 65102
+                        1.1.1.104:
+                            remote_as: 65102
+            interfaces:
+                Ethernet1:
+                    mtu: 9214
+                    ipv4: 10.102.201.201/24
+                    int_type: 10gbase-x-sfpp
+                    vrf: default
+                Ethernet2:
+                    mtu: 9214
+                    ipv4: 10.103.201.201/24
+                    int_type: 10gbase-x-sfpp
+                    vrf: default
+                Ethernet3:
+                    mtu: 9214
+                    ipv4: 10.104.201.201/24
+                    int_type: 10gbase-x-sfpp
+                    vrf: default
+        EOS2:
+            device_type: 7280SR
+            device_role: Leaf
+            device_platform: EOS
+            manufacturer: Arista
+            fqdn: eos2.greer.net
+            mgmt_ip: 10.255.255.32/24
+            mgmt_vrf: MGMT
+            bgp:
+                as: 65101
+                neighbors:
+                    ipv4_unicast:
+                        10.102.201.102:
+                            remote_as: 65100
+                            description: EOS1
+                        10.102.202.102:
+                            remote_as: 65100
+                            description: EOS5
+                    evpn:
+                        1.1.1.201:
+                            remote_as: 65100
+                        1.1.1.202:
+                            remote_as: 65100
+            interfaces:
+                Ethernet1:
+                    mtu: 9214
+                    ipv4: 10.102.201.102/24
+                    int_type: 10gbase-x-sfpp
+                    vrf: default
+                Ethernet2:
+                    mtu: 9214
+                    ipv4: 10.102.202.102/24
+                    int_type: 10gbase-x-sfpp
+                    vrf: default
+        EOS3:
+            device_type: 7280SR
+            device_role: Leaf
+            device_platform: EOS
+            manufacturer: Arista
+            fqdn: eos3.greer.net
+            mgmt_ip: 10.255.255.33/24
+            mgmt_vrf: MGMT
+            bgp:
+                as: 65102
+                neighbors:
+                    ipv4_unicast:
+                        10.103.201.103:
+                            remote_as: 65100
+                            description: EOS1
+                        10.103.202.103:
+                            remote_as: 65100
+                            description: EOS5
+                        192.168.255.255:
+                            remote_as: self
+                            description: EOS4
+                    evpn:
+                        1.1.1.201:
+                            remote_as: 65100
+                        1.1.1.202:
+                            remote_as: 65100
+            mlag:
+                interfaces: ['Ethernet8','Ethernet9']
+                side: a
+            interfaces:
+                Ethernet1:
+                    mtu: 9214
+                    ipv4: 10.103.201.103/24
+                    int_type: 10gbase-x-sfpp
+                    vrf: default
+                Ethernet2:
+                    mtu: 9214
+                    ipv4: 10.103.202.103/24
+                    int_type: 10gbase-x-sfpp
+                    vrf: default
+        EOS4:
+            device_type: 7280SR
+            device_role: Leaf
+            device_platform: EOS
+            manufacturer: Arista
+            fqdn: eos4.greer.net
+            mgmt_ip: 10.255.255.34/24
+            mgmt_vrf: MGMT
+            bgp:
+                as: 65102
+                neighbors:
+                    ipv4_unicast:
+                        10.104.201.104:
+                            remote_as: 65100
+                            description: EOS1
+                        10.104.202.104:
+                            remote_as: 65100
+                            description: EOS5
+                        192.168.255.254:
+                            remote_as: self
+                            description: EOS5
+                    evpn:
+                        1.1.1.201:
+                            remote_as: 65100
+                        1.1.1.202:
+                            remote_as: 65100
+                            
+            mlag:
+                interfaces: ['Ethernet8','Ethernet9']
+                side: b
+            interfaces:
+                Ethernet1:
+                    mtu: 9214
+                    ipv4: 10.104.201.103/24
+                    int_type: 10gbase-x-sfpp
+                    vrf: default
+                Ethernet2:
+                    mtu: 9214
+                    ipv4: 10.104.202.103/24
+                    int_type: 10gbase-x-sfpp
+                    vrf: default
+        EOS5:
+            device_type: 7280SR
+            device_role: Spine
+            device_platform: EOS
+            manufacturer: Arista
+            fqdn: eos5.greer.net
+            mgmt_ip: 10.255.255.35/24
+            mgmt_vrf: MGMT
+            bgp:
+                as: 65100
+                neighbors:
+                    ipv4_unicast:
+                        10.102.202.102:
+                            remote_as: 65100
+                            description: EOS2
+                        10.103.202.103:
+                            remote_as: 65100
+                            description: EOS3
+                        10.104.202.104:
+                            remote_as: self
+                            description: EOS4
+                    evpn:
+                        1.1.1.102:
+                            remote_as: 65101
+                        1.1.1.103:
+                            remote_as: 65102
+                        1.1.1.104:
+                            remote_as: 65102
+            interfaces:
+                Ethernet1:
+                    mtu: 9214
+                    ipv4: 10.102.202.202/24
+                    int_type: 10gbase-x-sfpp
+                    vrf: default
+                Ethernet2:
+                    mtu: 9214
+                    ipv4: 10.103.202.202/24
+                    int_type: 10gbase-x-sfpp
+                    vrf: default
+                Ethernet3:
+                    mtu: 9214
+                    ipv4: 10.104.202.202/24
+                    int_type: 10gbase-x-sfpp
+                    vrf: default
+    vlan_info:
+        10:
+            name: 'Ten'
+            subnet: '10.10.10.0'
+            mask: '24'

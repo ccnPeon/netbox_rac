@@ -1,0 +1,28 @@
+{% if mlag %}
+{# Configure MLAG Peer VLAN #}
+vlan 4094
+    name MLAG_PEERLINK
+    trunk group MLAGPEER
+no spanning-tree vlan-id 4094
+!
+{# Configure MLAG Peer VLAN #}
+interface vlan 4094
+    ip address {{ mlag['ip'] }}
+    no shutdown
+{%  if group_vars['underlay']['type'] == 'OSPF' %}
+    ip ospf area 0
+    ip ospf network point-to-point
+{% endif %}
+{% if group_vars['ospf']['authentication'] %}
+    ip ospf authentication message-digest
+    ip ospf message-digest-key 1 md5 0 {{ group_vars['ospf']['authentication'] }}
+{% endif %}
+!
+{# Configure MLAG #}
+mlag configuration
+    domain-id {{ mlag['domain-id'] }}
+    peer-link Port-Channel{{ mlag['port-channel'] }}
+    local-interface vlan4094
+    peer-address {{ mlag['peer-address'] }}
+{% endif %}
+!

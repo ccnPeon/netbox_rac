@@ -1,0 +1,18 @@
+{% if device_type ==  'Leaf' %}
+ip virtual-router mac-address {{ group_vars['varp']['virtual_router_mac'] }}
+{% for vlan in vlan_list %}
+{% if group_vars['vlan']['info'][vlan]['is_l3'] == True %}
+interface vlan{{ vlan }}
+    mtu 9214
+    no autostate
+    no shutdown
+{% endif %}
+{% if 'vrf' in group_vars['vlan']['info'][vlan] %}
+    vrf {{ group_vars['vlan']['info'][vlan]['vrf'] }}
+{% endif %}
+{% if group_vars['vlan']['info'][vlan]['is_evpn'] == True %}
+    ip address virtual {{ group_vars['vlan']['info'][vlan]['ip'] }}
+{% endif %}
+!
+{% endfor %}
+{%  endif %}

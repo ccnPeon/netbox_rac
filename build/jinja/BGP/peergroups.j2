@@ -1,0 +1,28 @@
+{% if bgp['peer_groups'] %}
+{% for group in bgp['peer_groups'] %}
+{% if group_vars['bgp']['peer_groups'][group]['is_evpn'] and group_vars['bgp']['peer_groups'][group]['is_evpn'] == True %}
+    neighbor {{ group }} peer group
+    neighbor {{ group }} maximum-routes 0
+    neighbor {{ group }} ebgp-multihop 8
+    neighbor {{ group }} send-community extended
+{% endif %}
+{% if group_vars['bgp']['peer_groups'][group]['is_underlay'] and group_vars['bgp']['peer_groups'][group]['is_underlay'] == True %}
+    neighbor {{ group }} peer group
+    neighbor {{ group }} maximum-routes 0
+    neighbor {{ group }} send-community
+{% endif %}
+{% if group_vars['bgp']['peer_groups'][group]['next_hop_self'] == True %}
+    neighbor {{ group }} next-hop-self
+{% endif %}
+{% if group_vars['bgp']['peer_groups'][group]['update_source'] %}
+    neighbor {{ group }} update-source {{ group_vars['bgp']['peer_groups'][group]['update_source'] }}
+{% endif %}
+{% if bgp['is_reflector'] and bgp['is_reflector'] == True %}
+    neighbor {{ group }} route-reflector-client
+{% endif %}
+{% if group_vars['bgp']['peer_groups'][group]['remote-as'] %}
+    neighbor {{ group }} remote-as {{ group_vars['bgp']['peer_groups'][group]['remote-as'] }}
+{% endif %}
+!
+{% endfor %}
+{%  endif %}

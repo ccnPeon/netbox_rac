@@ -1,0 +1,6 @@
+name,role,site,manufacturer,type,platform
+EOS1,Spine,OHV_LAB_SIM,Arista,7280SR,eos
+EOS2,Leaf,OHV_LAB_SIM,Arista,7280SR,eos
+EOS3,Leaf,OHV_LAB_SIM,Arista,7280SR,eos
+EOS4,Leaf,OHV_LAB_SIM,Arista,7280SR,eos
+EOS5,Spine,OHV_LAB_SIM,Arista,7280SR,eos

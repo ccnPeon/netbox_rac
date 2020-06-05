@@ -1,0 +1,12 @@
+router bgp {{ bgp['as'] }}
+    no bgp default ipv4-unicast
+    router-id {{ interfaces['Loopback0']['ip'][:-3] }}
+    maximum-paths 4 ecmp 4
+{% if group_vars['underlay']['type'] == 'BGP' %}
+{% for interface in interfaces %}
+{% if 'Loopback' in interface %}
+    network {{ interfaces[interface]['ip'] }}
+{% endif %}
+{% endfor %}
+{% endif %}
+!

@@ -1,0 +1,21 @@
+{%  for interface in device_interfaces %}
+interface {{ interface['name'] }}
+{% if interface['count_ipaddresses'] != 0 %}
+    {% for ip in device_ips %}
+    {% if interface['name'] != 'Management1' and ip['interface']['id'] == interface['id'] %}
+    no switchport
+    {% if ip['vrf'] and ip['vrf']['name'] != 'default' %}
+    vrf {{ ip['vrf']['name'] }}
+    {% endif %}
+    ip address {{ ip['address'] }}
+    mtu {{ interface['mtu'] }}
+    {% elif interface['name'] == 'Management1' and ip['interface']['id'] == interface['id'] %}
+    {% if ip['vrf'] and ip['vrf']['name'] != 'default'%}
+    vrf {{ ip['vrf']['name'] }}
+    {% endif %}
+    ip address {{ ip['address'] }}
+    mtu {{ interface['mtu'] }}
+    {% endif %}
+    {% endfor %}
+{% endif %}
+{% endfor %}

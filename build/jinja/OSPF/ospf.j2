@@ -1,0 +1,5 @@
+{% if group_vars['underlay']['type'] == 'OSPF' %}
+router ospf {{ group_vars['ospf']['process_id'] }}
+    router-id {{ interfaces['Loopback0']['ip'][:-3] }}
+!
+{% endif %}

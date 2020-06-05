@@ -1,0 +1,20 @@
+{% if vxlan is defined %}
+interface Vxlan1
+    vxlan source-interface {{ vxlan['source_if'] }}
+!
+{# Configure VxLAN L2 VNIs #}
+{% for vlan in vlan_list %}
+{% if group_vars['vlan']['info'][vlan]['is_evpn'] == True %}
+    vxlan vlan {{ vlan }} vni {{ group_vars['vlan']['info'][vlan]['vni'] }}
+{% endif %}
+{% endfor %}
+{# End Configure VxLAN L2 VNIs #}
+!
+{# Configure VxLAN L3 VNIs #}
+{% for vrf in vrf_list %}
+{% if group_vars['vrf']['info'][vrf]['is_evpn'] == True %}
+    vxlan vrf {{ vrf }} vni {{ group_vars['vrf']['info'][vrf]['vni'] }}
+{% endif %}
+{% endfor %}
+{% endif %}
+!

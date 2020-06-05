@@ -1,0 +1,12 @@
+{% if bgp['neighbors'] != None %}
+{% for neighbor in bgp['neighbors'] %}
+{% if neighbor['peer-group'] %}
+    neighbor {{ neighbor['ip'] }} peer-group {{ neighbor['peer-group'] }}
+{% endif %}
+{% if neighbor['remote-as'] %}
+    neighbor {{ neighbor['ip'] }} remote-as {{ neighbor['remote-as'] }}
+{% endif %}
+    neighbor {{ neighbor['ip'] }} description {{ neighbor['description'] }}
+!
+{% endfor %}
+{% endif %}

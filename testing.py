@@ -1,35 +1,35 @@
 import requests
 import json
-from netbox_rac import NetboxConnection
+from build.tools.netbox_rac import NetboxConnection
 from pprint import pprint
 
 server = 'docker1:8080'
+token = '0123456789abcdef0123456789abcdef01234567'
 model = '7280SR'
 manufacturer = 'Arista'
 role = 'LEAF'
 # token = ''
-token = '0123456789abcdef0123456789abcdef01234567'
 new_devices = ['EOS2', 'EOS3', 'EOS4', 'EOS5']
 site = 'OHV_LAB_SIM'
 
 
 device_list = {
-    # 'EOS1': {
-    #     'role': 'Spine',
-    #     'ip': '10.255.255.31/24'
-    # },
-    # 'EOS2': {
-    #     'role': 'Spine',
-    #     'ip': '10.255.255.32/24'
-    # },
-    # 'EOS3': {
-    #     'role': 'Spine',
-    #     'ip': '10.255.255.33/24'
-    # },
-    # 'EOS4': {
-    #     'role': 'Spine',
-    #     'ip': '10.255.255.34/24'
-    # },
+    'EOS1': {
+        'role': 'Spine',
+        'ip': '10.255.255.31/24'
+    },
+    'EOS2': {
+        'role': 'Spine',
+        'ip': '10.255.255.32/24'
+    },
+    'EOS3': {
+        'role': 'Spine',
+        'ip': '10.255.255.33/24'
+    },
+    'EOS4': {
+        'role': 'Spine',
+        'ip': '10.255.255.34/24'
+    },
     'EOS5': {
         'role': 'Spine',
         'interfaces': {
@@ -69,20 +69,36 @@ connection = NetboxConnection(token,server)
 # new_device = connection.create_device('EOS2', site, role, manufacturer, model)
 # print(new_device)
 
-# device = connection.get_device_by_name('EOS5')
+# device = connection.get_device_by_name('EOS1')
 # pprint(device)
+
+
+# for device in device_list:
+#     print(device)
+#     print(connection.get_device_bgp_neighbors(device))
+
+# print(connection.get_device_bgp_neighbors('EOS1'))
+
+# device = connection.get_device_bgp_as('EOS1')
+# pprint(device)
+
+# bgp_as = connection.add_device_bgp_as('EOS4', 65202)
+# print(bgp_as)
+
+# bgp_neighbors = connection.add_device_bgp_neighbor('EOS1','10.101.201.101', 'EOS2')
+# print(bgp_neighbors)
 
 # interface = connection.get_interface_by_id(1)
 # pprint(interface)
 
-# ip = connection.get_ip_address_specific('10.255.255.35/24')
+# ip = connection.get_ip_address_specific('10.255.255.31/24')
 # pprint(ip)
 
-ip = connection.add_ip_address('10.255.255.37/24', 'MGMT')
-pprint(ip)
+# ip = connection.add_ip_address('10.255.255.37/24', 'MGMT')
+# pprint(ip)
 
-ip = connection.add_ip_address_to_interface('10.255.255.37/24', 'EOS5', 'Ethernet2', 'eos5.greer.net')
-pprint(ip)
+# ip = connection.add_ip_address_to_interface('10.255.255.37/24', 'EOS5', 'Ethernet2', 'eos5.greer.net')
+# pprint(ip)
 
 # interface = connection.get_interface_all()
 # print(interface)
@@ -106,3 +122,8 @@ pprint(ip)
 #     print(new_device_payload)
 
 # new_device_post = json.loads(requests.post(url=url+'/{0}'.format(new_id),))
+
+# ip = connection.assign_primary_ip_to_device(36,'10.255.255.31/24')
+# print(ip)
+
+print(connection.get_device_lldp_info('EOS1'))

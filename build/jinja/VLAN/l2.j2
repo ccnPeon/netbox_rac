@@ -1,0 +1,6 @@
+{% for vlan in vlan_list %}
+{# Configure L2 Vlan Info #}
+vlan {{ vlan }}
+    name {{ group_vars['vlan']['info'][vlan]['name'] }}
+{%  endfor %}
+!

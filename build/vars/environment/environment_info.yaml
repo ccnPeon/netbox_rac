@@ -1,0 +1,23 @@
+manufacturers:
+    - Arista
+platforms:
+    EOS:
+        manufacturer: Arista
+        napalm_driver: eos
+        napalm_arguments: null
+device_types:
+    veos:
+        manufacturer: Arista
+        u_height: 0
+        part_number: null
+        is_full_depth: False
+    7280SR:
+        manufacturer: Arista
+        u_height: 1
+        part_number: 7280SR
+        is_full_depth: True
+device_roles:
+    Leaf:
+        color: 4caf50
+    Spine:
+        color: 2196f3
